@@ -96,14 +96,20 @@ function App() {
     (item) => item.status === "Safe"
   ).length;
 
-  const pieData = {
-    labels: ["Safe", "Medium Risk", "High Risk"],
-    datasets: [
-      {
-        data: [safeSites, mediumRisk, highRisk],
-      },
-    ],
-  };
+ const pieData = {
+  labels: ["Safe", "Medium Risk", "High Risk"],
+  datasets: [
+    {
+      data: [safeSites, mediumRisk, highRisk],
+      backgroundColor: [
+        "#28a745", // Green
+        "#ffc107", // Yellow
+        "#dc3545", // Red
+      ],
+      borderWidth: 1,
+    },
+  ],
+};
 
   return (
     <div className="container-fluid">
