@@ -109,12 +109,14 @@ const analyzeUrl = () => {
   }
 
   const scanResult = {
-    website: url,
-    risk,
-    status,
-    indicators,
-    recommendation,
-  };
+  website: url,
+  risk,
+  status,
+  indicators,
+  threatCount: indicators.length,
+  recommendation,
+  timestamp: new Date().toLocaleString(),
+};
 
   setResult(scanResult);
   setHistory([scanResult, ...history]);
@@ -205,28 +207,28 @@ const analyzeUrl = () => {
           <div className="row mb-4">
 
             <div className="col-md-3">
-              <div className="card text-center p-3">
+        <div className="card text-center p-3 bg-primary text-white">
                 <h5>Total Scans</h5>
                 <h2>{totalScans}</h2>
               </div>
             </div>
 
             <div className="col-md-3">
-              <div className="card text-center p-3">
+          <div className="card text-center p-3 bg-success text-white">
                 <h5>Safe Sites</h5>
                 <h2>{safeSites}</h2>
               </div>
             </div>
 
             <div className="col-md-3">
-              <div className="card text-center p-3">
+             <div className="card text-center p-3 bg-warning text-white">
                 <h5>Medium Risk</h5>
                 <h2>{mediumRisk}</h2>
               </div>
             </div>
 
             <div className="col-md-3">
-              <div className="card text-center p-3">
+             <div className="card text-center p-3 bg-danger text-white">
                 <h5>High Risk</h5>
                 <h2>{highRisk}</h2>
               </div>
@@ -247,10 +249,29 @@ const analyzeUrl = () => {
                     {result.website}
                   </p>
 
-                  <p>
-                    <strong>Risk Score:</strong>{" "}
-                    {result.risk}/100
-                  </p>
+                <div className="mb-3">
+  <h5>Security Score</h5>
+  <p>
+  <strong>Threat Indicators Found:</strong>{" "}
+  {result.threatCount}
+</p>
+
+  <div className="display-5 fw-bold">
+    {100 - result.risk}/100
+  </div>
+
+  <span
+    className={`badge ${
+      result.status === "Safe"
+        ? "bg-success"
+        : result.status === "Medium Risk"
+        ? "bg-warning text-dark"
+        : "bg-danger"
+    }`}
+  >
+    {result.status}
+  </span>
+</div>
 
                   <p>
                     <strong>Status:</strong>{" "}
@@ -259,11 +280,17 @@ const analyzeUrl = () => {
 
                   <div className="progress">
                     <div
-                      className="progress-bar"
-                      style={{
-                        width: `${result.risk}%`,
-                      }}
-                    >
+  className={`progress-bar ${
+    result.risk >= 70
+      ? "bg-danger"
+      : result.risk >= 40
+      ? "bg-warning"
+      : "bg-success"
+  }`}
+  style={{
+    width: `${result.risk}%`,
+  }}
+>
                       {result.risk}%
                     </div>
                   </div>
@@ -294,40 +321,70 @@ const analyzeUrl = () => {
           )}
 
           {/* Analytics */}
+                    {/* Analytics */}
           <div className="row mb-4">
-
-            <div className="col-md-6">
+          <div className="col-md-6">
               <div className="card p-3">
-                <h4>Threat Distribution</h4>
-
+              <h4>Threat Distribution</h4>
                 <Pie data={pieData} />
               </div>
             </div>
 
             <div className="col-md-6">
               {result && (
-                <div className="card p-3">
-                  <h4>AI Recommendation</h4>
+                <>
+                  <div className="card p-3 mb-3">
+                    <h4>AI Recommendation</h4>
 
-                 <div className="alert alert-info">
-  {result.recommendation}
-</div>
-                </div>
+                    <div className="alert alert-info">
+                      {result.recommendation}
+                    </div>
+                  </div>
+
+                  <div className="card p-3">
+                    <h4>Analysis Summary</h4>
+
+                    <p>
+                      <strong>Total URLs Scanned:</strong>{" "}
+                      {totalScans}
+                    </p>
+
+                    <p>
+                      <strong>Safe Websites:</strong>{" "}
+                      {safeSites}
+                    </p>
+
+                    <p>
+                      <strong>Medium Risk Websites:</strong>{" "}
+                      {mediumRisk}
+                    </p>
+
+                    <p>
+                      <strong>High Risk Websites:</strong>{" "}
+                      {highRisk}
+                    </p>
+                  </div>
+                </>
               )}
-            </div>
-
           </div>
-
+          </div>
+<input
+  type="text"
+  className="form-control mb-3"
+  placeholder="Search scanned URLs"
+/>
           {/* History */}
-          <div className="card p-3">
-            <h4>Recent Website Analysis</h4>
+          <div className="card p-3 mt-4">
+            <h4>Recent URL Analysis</h4>
 
-            <table className="table mt-3">
+            <table className="table table-striped">
               <thead>
                 <tr>
                   <th>Website</th>
                   <th>Risk Score</th>
                   <th>Status</th>
+                  <th>Date & Time</th>  
+                  <td>{item.timestamp}</td>
                 </tr>
               </thead>
 
@@ -335,8 +392,21 @@ const analyzeUrl = () => {
                 {history.map((item, index) => (
                   <tr key={index}>
                     <td>{item.website}</td>
-                    <td>{item.risk}</td>
-                    <td>{item.status}</td>
+                    <td>{item.risk}/100</td>
+                    <td>
+                      <span
+                        className={`badge ${
+                          item.status === "Safe"
+                            ? "bg-success"
+                            : item.status ===
+                              "Medium Risk"
+                            ? "bg-warning text-dark"
+                            : "bg-danger"
+                        }`}
+                      >
+                        {item.status}
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
