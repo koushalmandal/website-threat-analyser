@@ -376,41 +376,39 @@ const analyzeUrl = () => {
           {/* History */}
           <div className="card p-3 mt-4">
             <h4>Recent URL Analysis</h4>
+<table className="table table-striped">
+  <thead>
+    <tr>
+      <th>Website</th>
+      <th>Risk Score</th>
+      <th>Status</th>
+      <th>Date & Time</th>
+    </tr>
+  </thead>
 
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th>Website</th>
-                  <th>Risk Score</th>
-                  <th>Status</th>
-                  <th>Date & Time</th>  
-                  <td>{item.timestamp}</td>
-                </tr>
-              </thead>
-
-              <tbody>
-                {history.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.website}</td>
-                    <td>{item.risk}/100</td>
-                    <td>
-                      <span
-                        className={`badge ${
-                          item.status === "Safe"
-                            ? "bg-success"
-                            : item.status ===
-                              "Medium Risk"
-                            ? "bg-warning text-dark"
-                            : "bg-danger"
-                        }`}
-                      >
-                        {item.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+  <tbody>
+    {history.map((item, index) => (
+      <tr key={index}>
+        <td>{item.website}</td>
+        <td>{item.risk}/100</td>
+        <td>
+          <span
+            className={`badge ${
+              item.status === "Safe"
+                ? "bg-success"
+                : item.status === "Medium Risk"
+                ? "bg-warning text-dark"
+                : "bg-danger"
+            }`}
+          >
+            {item.status}
+          </span>
+        </td>
+        <td>{item.timestamp}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
           </div>
 
         </div>
