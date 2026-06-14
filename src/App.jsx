@@ -152,34 +152,48 @@ const analyzeUrl = () => {
 };
 
   return (
-    <div className="container-fluid">
-      <div className="row">
-
-        {/* Sidebar */}
+    <div
+      className="container-fluid text-white"
+      style={{
+        backgroundColor: "#0b1220",
+        minHeight: "100vh",
+      }}
+    >
+    <div className="row">
         <div
-          className="col-md-2 text-white p-4"
+          className="col-md-2 p-4"
           style={{
-            backgroundColor: "#1f2937",
+            backgroundColor: "#0b1220",
             minHeight: "100vh",
           }}
         >
-          <h3>Threat Analyzer</h3>
+          <h3>🛡 Threat Analyzer</h3>
           <hr />
 
-          <p>📊 Dashboard</p>
-          <p>🔍 Check URL</p>
-          <p>📜 History</p>
-          <p>📈 Analytics</p>
-          <p>📄 Reports</p>
+          <p>🏠 Dashboard</p>
+          <p>🔍 URL Scanner</p>
+          <p>📊 Threat Analytics</p>
+          <p>🛡 Security Insights</p>
+          <p>📜 Scan History</p>
           <p>⚙ Settings</p>
         </div>
 
         {/* Main */}
-        <div className="col-md-10 p-4">
+        <div
+          className="col-md-10 p-4"
+          style={{
+            backgroundColor: "#0b1220",
+            minHeight: "100vh",
+          }}
+        >
 
           <h1 className="mb-4">
             AI-Based Website Threat Analyzer
           </h1>
+         <p className="text-light fs-5">
+  Analyze URLs for phishing indicators, suspicious patterns,
+  insecure protocols, and potential cybersecurity threats.
+</p>
 
           {/* URL Input */}
           <div className="card p-3 mb-4">
@@ -221,7 +235,7 @@ const analyzeUrl = () => {
             </div>
 
             <div className="col-md-3">
-             <div className="card text-center p-3 bg-warning text-white">
+             <div className="card text-center p-3 bg-warning text-dark">
                 <h5>Medium Risk</h5>
                 <h2>{mediumRisk}</h2>
               </div>
@@ -241,7 +255,14 @@ const analyzeUrl = () => {
             <div className="row mb-4">
 
               <div className="col-md-6">
-                <div className="card p-3">
+              <div
+  className="card p-3 text-white"
+  style={{
+    backgroundColor: "#111827",
+    border: "1px solid #1f2937",
+    borderRadius: "15px",
+  }}
+>
                   <h4>Risk Analysis</h4>
 
                   <p>
