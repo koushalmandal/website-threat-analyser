@@ -15,73 +15,111 @@ function App() {
   const [result, setResult] = useState(null);
   const [history, setHistory] = useState([]);
 
-  const analyzeUrl = () => {
-    if (!url.trim()) {
-      alert("Please enter a URL");
-      return;
+const analyzeUrl = () => {
+  if (!url.trim()) {
+    alert("Please enter a URL");
+    return;
+  }
+
+  let risk = 10;
+  const indicators = [];
+
+  // HTTPS Check
+  if (!url.startsWith("https://")) {
+    risk += 25;
+    indicators.push("Website is not using HTTPS");
+  }
+
+  // Suspicious Keywords
+  const suspiciousWords = [
+    "login",
+    "verify",
+    "free",
+    "gift",
+    "bonus",
+    "bank",
+    "secure",
+    "win",
+    "reward",
+    "update",
+    "account",
+  ];
+
+  suspiciousWords.forEach((word) => {
+    if (url.toLowerCase().includes(word)) {
+      risk += 10;
+      indicators.push(`Suspicious keyword detected: ${word}`);
     }
+  });
 
-    let risk = 10;
-    const indicators = [];
+  // Long URL Detection
+  if (url.length > 40) {
+    risk += 15;
+    indicators.push("Unusually long URL detected");
+  }
 
-    if (!url.startsWith("https://")) {
-      risk += 25;
-      indicators.push("Website is not using HTTPS");
-    }
+  // IP Address Detection
+  const ipPattern =
+    /(\d{1,3}\.){3}\d{1,3}/;
 
-    const suspiciousWords = [
-      "login",
-      "verify",
-      "free",
-      "gift",
-      "bonus",
-      "bank",
-      "secure",
-      "win",
-    ];
+  if (ipPattern.test(url)) {
+    risk += 25;
+    indicators.push("IP Address used instead of domain name");
+  }
 
-    suspiciousWords.forEach((word) => {
-      if (url.toLowerCase().includes(word)) {
-        risk += 10;
-        indicators.push(`Suspicious keyword: ${word}`);
-      }
-    });
+  // Multiple Hyphens
+  const hyphenCount =
+    (url.match(/-/g) || []).length;
 
-    if (url.length > 40) {
-      risk += 15;
-      indicators.push("Long URL detected");
-    }
+  if (hyphenCount >= 3) {
+    risk += 15;
+    indicators.push("Multiple hyphens detected");
+  }
 
-    if (risk > 100) risk = 100;
+  // Too Many Numbers
+  const numberCount =
+    (url.match(/\d/g) || []).length;
 
-    let status = "Safe";
+  if (numberCount >= 5) {
+    risk += 10;
+    indicators.push("Large number of digits detected");
+  }
 
-    if (risk >= 70) {
-      status = "High Risk";
-    } else if (risk >= 40) {
-      status = "Medium Risk";
-    }
+  if (risk > 100) risk = 100;
 
-    const recommendation =
-      status === "High Risk"
-        ? "Avoid visiting this website."
-        : status === "Medium Risk"
-        ? "Proceed with caution."
-        : "Website appears safe.";
+  let status = "Safe";
 
-    const scanResult = {
-      website: url,
-      risk,
-      status,
-      indicators,
-      recommendation,
-    };
+  if (risk >= 70) {
+    status = "High Risk";
+  } else if (risk >= 40) {
+    status = "Medium Risk";
+  }
 
-    setResult(scanResult);
-    setHistory([scanResult, ...history]);
-    setUrl("");
+  let recommendation = "";
+
+  if (status === "High Risk") {
+    recommendation =
+      "This URL contains multiple phishing indicators and should be avoided.";
+  } else if (status === "Medium Risk") {
+    recommendation =
+      "This URL shows suspicious characteristics. Proceed with caution.";
+  } else {
+    recommendation =
+      "No major threats detected. Website appears relatively safe.";
+  }
+
+  const scanResult = {
+    website: url,
+    risk,
+    status,
+    indicators,
+    recommendation,
   };
 
+  setResult(scanResult);
+  setHistory([scanResult, ...history]);
+  setUrl("");
+};
   const totalScans = history.length;
 
   const highRisk = history.filter(
@@ -271,9 +309,9 @@ function App() {
                 <div className="card p-3">
                   <h4>AI Recommendation</h4>
 
-                  <p>
-                    {result.recommendation}
-                  </p>
+                 <div className="alert alert-info">
+  {result.recommendation}
+</div>
                 </div>
               )}
             </div>
