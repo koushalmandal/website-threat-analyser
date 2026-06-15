@@ -1,7 +1,7 @@
 function Scanner() {
   return (
     <div>
-      <h2>URL Scanner</h2>
+      <h1>URL Scanner</h1>
       <p>Analyze website URLs here.</p>
     </div>
   );
