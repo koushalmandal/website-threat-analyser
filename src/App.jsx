@@ -1,3 +1,10 @@
+import { Routes, Route, Link } from "react-router-dom";
+
+import Dashboard from "./pages/Dashboard";
+import Scanner from "./pages/Scanner";
+import Analytics from "./pages/Analytics";
+import History from "./pages/History";
+import Settings from "./pages/Settings";
 import { useState } from "react";
 import { Pie } from "react-chartjs-2";
 
@@ -153,40 +160,79 @@ const analyzeUrl = () => {
 
   return (
     <div
-      className="container-fluid text-white"
+      className="container-fluid text-white p-0"
       style={{
         backgroundColor: "#0b1220",
         minHeight: "100vh",
       }}
     >
-    <div className="row">
-        <div
-          className="col-md-2 p-4"
-          style={{
-            backgroundColor: "#0b1220",
-            minHeight: "100vh",
-          }}
-        >
+<div style={{ display: "flex" }}>        <div
+  style={{
+    width: "280px",
+    backgroundColor: "#0b1220",
+    minHeight: "100vh",
+  }}
+  className="p-4"
+>
           <h3>🛡 Threat Analyzer</h3>
           <hr />
 
-          <p>🏠 Dashboard</p>
-          <p>🔍 URL Scanner</p>
-          <p>📊 Threat Analytics</p>
-          <p>🛡 Security Insights</p>
-          <p>📜 Scan History</p>
-          <p>⚙ Settings</p>
+         <div className="d-flex flex-column gap-3">
+
+  <Link
+    to="/"
+    className="text-decoration-none text-white"
+  >
+    🏠 Dashboard
+  </Link>
+
+  <Link
+    to="/scanner"
+    className="text-decoration-none text-white"
+  >
+    🔍 URL Scanner
+  </Link>
+
+  <Link
+    to="/analytics"
+    className="text-decoration-none text-white"
+  >
+    📊 Threat Analytics
+  </Link>
+
+  <Link
+    to="/history"
+    className="text-decoration-none text-white"
+  >
+    📜 Scan History
+  </Link>
+
+  <Link
+    to="/settings"
+    className="text-decoration-none text-white"
+  >
+    ⚙ Settings
+  </Link>
+
+</div>
         </div>
 
-        {/* Main */}
-        <div
-          className="col-md-10 p-4"
-          style={{
-            backgroundColor: "#0b1220",
-            minHeight: "100vh",
-          }}
-        >
-
+        {/* Main */}  
+       <div
+  className="p-4"
+  style={{
+    flex: 1,
+    backgroundColor: "#0b1220",
+    minHeight: "100vh",
+  }}
+>
+<Routes>
+  <Route path="/" element={<Dashboard />} />
+  <Route path="/scanner" element={<Scanner />} />
+  <Route path="/analytics" element={<Analytics />} />
+  <Route path="/history" element={<History />} />
+  <Route path="/settings" element={<Settings />} />
+</Routes>
           <h1 className="mb-4">
             AI-Based Website Threat Analyzer
           </h1>
@@ -196,7 +242,7 @@ const analyzeUrl = () => {
 </p>
 
           {/* URL Input */}
-          <div className="card p-3 mb-4">
+          <div className="card p-3 mb-4 text-white">
             <h4>Analyze Website</h4>
 
             <div className="input-group mt-3">
