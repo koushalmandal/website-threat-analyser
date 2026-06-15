@@ -1,5 +1,4 @@
 import { Routes, Route, Link } from "react-router-dom";
-
 import Dashboard from "./pages/Dashboard";
 import Scanner from "./pages/Scanner";
 import Analytics from "./pages/Analytics";
