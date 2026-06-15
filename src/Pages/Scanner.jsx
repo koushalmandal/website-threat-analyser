@@ -7,4 +7,4 @@ function Scanner() {
   );
 }
 
-export default Scanner;
+export default Scanner; 

@@ -1,9 +1,9 @@
 import { Routes, Route, Link } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
-import Scanner from "./pages/Scanner";
-import Analytics from "./pages/Analytics";
-import History from "./pages/History";
-import Settings from "./pages/Settings";
+import Dashboard from "./Pages/Dashboard";
+import Scanner from "./Pages/Scanner";
+import Analytics from "./Pages/Analytics";
+import History from "./Pages/History";
+import Settings from "./Pages/Settings";
 import { useState } from "react";
 import { Pie } from "react-chartjs-2";
 
