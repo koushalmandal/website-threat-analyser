@@ -6,6 +6,9 @@ import History from "./Pages/History";
 import Settings from "./Pages/Settings";
 import { useState } from "react";
 import { Pie } from "react-chartjs-2";
+import axios from "axios";
+import { useEffect } from "react";
+
 
 import {
   Chart as ChartJS,
@@ -20,6 +23,26 @@ function App() {
   const [url, setUrl] = useState("");
   const [result, setResult] = useState(null);
   const [history, setHistory] = useState([]);
+  useEffect(() => {
+  fetchHistory();
+}, []);
+ const fetchHistory = () => {
+  axios
+    .get("http://localhost:5000/api/scans")
+    .then((response) => {
+      const formattedData = response.data.map((item) => ({
+        website: item.website,
+        risk: item.risk_score,
+        status: item.status,
+        timestamp: new Date(item.scan_time).toLocaleString(),
+      }));
+
+      setHistory(formattedData.reverse());
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
 
 const analyzeUrl = () => {
   if (!url.trim()) {
@@ -125,7 +148,16 @@ const analyzeUrl = () => {
 };
 
   setResult(scanResult);
-  setHistory([scanResult, ...history]);
+
+axios
+  .post("http://localhost:5000/api/scans", {
+    website: url,
+    risk_score: risk,
+    status: status,
+  })
+  .then(() => {
+    fetchHistory();
+  });
   setUrl("");
 };
   const totalScans = history.length;
@@ -241,26 +273,22 @@ const analyzeUrl = () => {
 </p>
 
           {/* URL Input */}
-          <div className="card p-3 mb-4 text-white">
-            <h4>Analyze Website</h4>
+          <div className="input-group mt-3">
+  <input
+    type="text"
+    className="form-control"
+    placeholder="Enter Website URL"
+    value={url}
+    onChange={(e) => setUrl(e.target.value)}
+  />
 
-            <div className="input-group mt-3">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Enter Website URL"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-              />
-
-              <button
-                className="btn btn-success"
-                onClick={analyzeUrl}
-              >
-                Analyze URL
-              </button>
-            </div>
-          </div>
+  <button
+    className="btn btn-success"
+    onClick={analyzeUrl}
+  >
+    Analyze URL
+  </button>
+</div>
 
           {/* Dashboard Cards */}
           <div className="row mb-4">
@@ -434,11 +462,6 @@ const analyzeUrl = () => {
               )}
           </div>
           </div>
-<input
-  type="text"
-  className="form-control mb-3"
-  placeholder="Search scanned URLs"
-/>
           {/* History */}
           <div className="card p-3 mt-4">
             <h4>Recent URL Analysis</h4>
